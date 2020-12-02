@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() { 
+import GuessedWords from './GuessedWords';
+import Congrats from './Congrats';
 
-  const [count, setCount] = useState(0);
-
-  return (
-    <div data-test="component-app">
-      <h1 data-test="counter-display">
-          The counter is currently 
-          <span data-test="count">{count}</span>
-      </h1>
-      <button data-test="increment-button"
-        onClick={() => setCount(count + 1)}
-      >Increment counter</button>
-    </div>
-  )
+class App extends Component { 
+  render() {
+    return (
+      <div className="App">
+        <h1>Jotto</h1>
+        <Congrats success={true} />
+        <GuessedWords guessedWords={[
+          { guessedWord: 'train', letterMatchCount: 3 }
+        ]} />
+      </div>
+    )
+  }
 }
 
 export default App;
