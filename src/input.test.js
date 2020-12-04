@@ -1,15 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { findByTestAttr } from '../test/testUtils';
+import { findByTestAttr, storeFactory } from '../test/testUtils';
 import Input from './input';
 
 const setup = (initialState={}) => {
-  const wrapper = shallow(<Input />);
-  console.log(wrapper.debug());
+  const store = storeFactory(initialState)
+  const wrapper = shallow(<Input store={store} />).dive().dive();
+  return wrapper;
 }
-
-setup();
 
 describe('render', () => {
   describe('word has not been guessed', () => {
