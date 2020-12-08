@@ -1,50 +1,38 @@
 import React from 'react';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
+import { shallow } from 'enzyme';
+
+import { storeFactory } from '../test/testUtils';
 import App from './App';
 
-Enzyme.configure({ adapter: new Adapter() });
+const setup = (state={}) => {
+  const store = storeFactory(state);
+  const wrapper = shallow(<App store={store} />).dive().dive();
+  return wrapper;
+}
 
-const setup = () => shallow(<App />);
-const findByTestAttr = (wrapper, value) => {
-  return wrapper.find(`[data-test='${value}']`)
-};
+describe('redux properties', () => {
+  test('has access to `success` state', () => {
+    const success = true;
+    const wrapper = setup({ success: success });
+    const successProp = wrapper.instance().props.success;
+    expect(successProp).toBe(success);
+  });
+  test('has access to `secretWord` state', () => {
+    const secretWord = 'party';
+    const wrapper = setup({ secretWord: secretWord });
+    const secretWordProp = wrapper.instance().props.secretWordProp;
+    expect(secretWordProp).toBe(secretWord);
+  });
+  test('has access to `guessedWords` state', () => {
+    const guessedWords = [ { guessedWord: 'train', letterMatchCount: 3 } ];
+    const wrapper = setup({ guessedWords: guessedWords });
+    const guessedWordsProps = wrapper.instance().props.guessedWords;
+    expect(guessedWordsProps).toEqual(guessedWords);
+  });
+  test('`getSecretWord` action creator is a function on the props', () => {
+    const wrapper = setup();
+    const getSecretWordProp = wrapper.instance().props.getSecretWord;
+    expect(getSecretWordProp).toBeInstanceOf(Function);
+  });
+})
 
-test('renders without error', () => {
-  const wrapper = setup();
-  const appComponent = findByTestAttr(wrapper,'component-app');
-  expect(appComponent.length).toBe(1);
-});
-
-test('renders button', () => {
-  const wrapper = setup();
-  const button = findByTestAttr(wrapper,'increment-button');
-  expect(button.length).toBe(1);
-});
-
-test('renders counter display',() => {
-  const wrapper = setup();
-  const counterDisplay = findByTestAttr(wrapper,'counter-display');
-  expect(counterDisplay.length).toBe(1);
-});
-
-test('counter starts at 0',() => {
-  const wrapper = setup();
-  const count = findByTestAttr(wrapper, "count").text();
-  expect(count).toBe("0");
-});
-
-test('clicking on button increments counter display',() => {
-  const wrapper = setup();
-
-  // find the button
-  const button = findByTestAttr(wrapper, 'increment-button');
-
-  // click the button
-  button.simulate('click');
-
-  // find the display, and test that the number has been incremented
-  const count = findByTestAttr(wrapper, "count").text()
-  expect(count).toBe('1');
-
-});
