@@ -20,7 +20,7 @@ describe('redux properties', () => {
   test('has access to `secretWord` state', () => {
     const secretWord = 'party';
     const wrapper = setup({ secretWord: secretWord });
-    const secretWordProp = wrapper.instance().props.secretWordProp;
+    const secretWordProp = wrapper.instance().props.secretWord;
     expect(secretWordProp).toBe(secretWord);
   });
   test('has access to `guessedWords` state', () => {
