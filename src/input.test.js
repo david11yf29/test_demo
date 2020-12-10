@@ -82,7 +82,7 @@ describe('`guessWord` action creator call', () => {
     wrapper.setState({ currentGuess: guessedWord });
 
     const submitButton = findByTestAttr(wrapper, 'submit-button');
-    submitButton.simulate('click');
+    submitButton.simulate('click', { preventDefault() {} });
 
   });
 
